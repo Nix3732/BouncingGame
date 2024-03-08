@@ -1,11 +1,12 @@
 ﻿#include "Ball.hpp"
 #include "Game.hpp"
+#include "Block.hpp"
+#include <iostream>
 
 int main()
 {   
-    int a = 2;
-    ez::Game Game(1600, 900, "Bouncing Game");
-    Game.set(a);
+    ez::Game Game(1000, 1000, "Bouncing Game");
+    Game.set();
     Game.life();
 
 }
