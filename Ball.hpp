@@ -5,35 +5,41 @@
 namespace ez
 {
 	const float pi = acos(-1);
-	
-	class Circle1
+
+	class Circle
 	{
 		float c_r;
 		float c_x;
 		float c_y;
 		float c_vx;
 		float c_vy;
+		int c_red;
+		int c_g;
+		int c_b;
 		sf::CircleShape c_shape;
 
 	public:
-		Circle1() = default;
+		Circle() = default;
 
-		Circle1(float x1, float y1, float r1, float vx1, float vy1)
+		Circle(float x, float y, float r, float vx, float vy, int red, int green, int blue)
 		{
-			Setup(x1, y1, r1, vx1, vy1);
+			Setup(x, y, r, vx, vy, red, green, blue);
 		}
 
-		void Setup(float x1, float y1, float r1, float vx1, float vy1)
+		void Setup(float x, float y, float r, float vx, float vy, int red, int green, int blue)
 		{
-			c_x = x1;
-			c_y = y1;
-			c_r = r1;
-			c_vx = vx1;
-			c_vy = vy1;
+			c_x = x;
+			c_y = y;
+			c_r = r;
+			c_vx = vx;
+			c_vy = vy;
+			c_red = red;
+			c_g = green;
+			c_b = blue;
 			c_shape.setOrigin(c_r, c_r);
 			c_shape.setRadius(c_r);
 			c_shape.setPosition(c_x, c_y);
-			c_shape.setFillColor(sf::Color::Color(127,255,212));
+			c_shape.setFillColor(sf::Color::Color(c_red, c_g, c_b));
 		}
 
 		sf::CircleShape Get()
@@ -69,78 +75,17 @@ namespace ez
 		{
 			c_vy = vy;
 		}
-
-
-		void Move(float dt)
+		int RED()
 		{
-			c_x += c_vx * dt;
-			c_y += c_vy * dt;
-			c_shape.setPosition(c_x, c_y);
+			return c_red;
 		}
-	};
-
-	class Circle2
-	{
-		float c_r;
-		float c_x;
-		float c_y;
-		float c_vx;
-		float c_vy;
-		sf::CircleShape c_shape;
-
-	public:
-		Circle2() = default;
-
-		Circle2(float x2, float y2, float r2, float vx2, float vy2)
+		int GREEN()
 		{
-			Setup(x2, y2, r2, vx2, vy2);
+			return c_g;
 		}
-
-		void Setup(float x2, float y2, float r2, float vx2, float vy2)
+		int BLUE()
 		{
-			c_x = x2;
-			c_y = y2;
-			c_r = r2;
-			c_vx = vx2;
-			c_vy = vy2;
-			c_shape.setOrigin(c_r, c_r);
-			c_shape.setRadius(c_r);
-			c_shape.setPosition(c_x, c_y);
-			c_shape.setFillColor(sf::Color::Color(188, 143, 143));
-		}
-
-		sf::CircleShape Get()
-		{
-			return c_shape;
-		}
-
-		float X()
-		{
-			return c_x;
-		}
-		float Y()
-		{
-			return c_y;
-		}
-		float R()
-		{
-			return c_r;
-		}
-		float VX()
-		{
-			return c_vx;
-		}
-		void VX(float vx)
-		{
-			c_vx = vx;
-		}
-		float VY()
-		{
-			return c_vy;
-		}
-		void VY(float vy)
-		{
-			c_vy = vy;
+			return c_b;
 		}
 
 
