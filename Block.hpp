@@ -63,17 +63,12 @@ namespace ez
 		{
 			return b_b;
 		}
-		void RED(int r)
+		void Color(int r, int g, int b)
 		{
 			b_r = r;
-		}
-		void GREEN(int g)
-		{
 			b_g = g;
-		}
-		void BLUE(int b)
-		{
 			b_b = b;
+			Rect.setFillColor(sf::Color::Color(b_r, b_g, b_b));
 		}
 	};
 }

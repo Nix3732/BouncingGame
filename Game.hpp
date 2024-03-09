@@ -1,5 +1,4 @@
 #pragma once
-#include <ostream>
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Ball.hpp"
@@ -31,7 +30,7 @@ namespace ez
 		void set()
 		{
 			w_Window.create(sf::VideoMode(g_Wd, g_Hg), w_Name);
-
+			w_Window.setFramerateLimit(120);
 			icon.loadFromFile("assets\\icon.png");
 			w_Window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
@@ -40,20 +39,20 @@ namespace ez
 			int x = 250;
 			int y = 500;
 			int r = 10;
-			int vx = 400;
-			int vy = 400;
-			int red = 127;
-			int green = 255;
-			int blue = 212;
-			c1.Setup(x, y, r, vx, vy, red, green, blue);
+			int vx = rand() % 400 + 100;
+			int vy = pow(-1, rand()%2) * (1000-vx);
+			int red1 = 0;
+			int green1 = 101;
+			int blue1 = 97;
+			c1.Setup(x, y, r, vx, vy, red1, green1, blue1);
 
 			x = 750;
-			vx = -400;
-			vy = -400;
-			red = 0;
-			green = 255;
-			blue = 127;
-			c2.Setup(x, y, r, vx, vy, red, green, blue);
+			vx = -(rand() % 400 + 100);
+			vy = pow(-1, rand()%2) * (1000+vx);
+			int red2 = 0;
+			int green2 = 255;
+			int blue2 = 127;
+			c2.Setup(x, y, r, vx, vy, red2, green2, blue2);
 
 			int amount = pow(g_Wd / (r * 2), 2);
 
@@ -64,7 +63,7 @@ namespace ez
 			b = new ez::Block[amount];
 			for (int i = 0; i < amount; i++)
 			{
-				b[i].Setup(x, y, a, red, green, blue);
+				b[i].Setup(x, y, a, red2, green2, blue2);
 				y += a;
 				if (y % g_Wd == 0)
 				{
@@ -73,9 +72,9 @@ namespace ez
 				}
 				if (x / (g_Wd/2) >= 1)
 				{
-					red = 127;
-					green = 255;
-					blue = 212;
+					red2 = red1;
+					green2 = green1;
+					blue2 = blue1;
 				}
 			}
 		}
@@ -98,47 +97,32 @@ namespace ez
 			int bg = b.GREEN();
 			int bb = b.BLUE();
 
+			bool flag = false;
+
 			if ((cred == bred) && (cg == bg) && (cb == bb))
 			{
 				if ((xb - ab / 2 <= xc && xc <= xb) && (yb <= yc && yc <= yb + ab))
 				{
 					c.VX(-ex);
-					b.RED(cred);
-					b.GREEN(cg);
-					b.BLUE(cb);
-					return true;
+					flag = true;
 				}
 				if ((yb - ab / 2 <= yc && yc <= yb) && (xb <= xc && xc <= xb + ab))
 				{
-					c.VX(-ey);
-					b.RED(cred);
-					b.GREEN(cg);
-					b.BLUE(cb);
-					return true;
+					c.VY(-ey);
+					flag = true;
 				}
 				if ((xb + ab <= xc && xc <= xb + (ab * 3 / 2)) && (yb <= yc && yc <= yb + ab))
 				{
 					c.VX(-ex);
-					b.RED(cred);
-					b.GREEN(cg);
-					b.BLUE(cb);
-					return true;
+					flag = true;
 				}
 				if ((yb + ab <= yc && yc <= yb + (ab * 3 / 2)) && (xb <= xc && xc <= xb + ab))
 				{
-					c.VX(-ey);
-					b.RED(cred);
-					b.GREEN(cg);
-					b.BLUE(cb);
-					return true;
+					c.VY(-ey);
+					flag = true;
 				}
+				return flag;
 			}
-			else
-			{
-				return false;
-			}
-
-
 		}
 
 		void border(Circle& c)
@@ -148,17 +132,14 @@ namespace ez
 			float r = c.R();
 			float ex = c.VX();
 			float ey = c.VY();
-			int cred = c.RED();
-			int cg = c.GREEN();
-			int cb = c.BLUE();
 
 			
-			if ((x - r <= 0) || (x + r >= g_Wd))
+			if ((x - r < 1) || (x + r > g_Wd - 1))
 			{
 				c.VX(-ex);
 			}
 
-			if ((y - r <= 0) || (y + r >= g_Hg))
+			if ((y - r < 1) || (y + r > g_Hg - 1))
 			{
 				c.VY(-ey);
 			}
@@ -190,11 +171,11 @@ namespace ez
 				{	
 					if (ColorBorder(c1, b[i]) == true)
 					{
-						b[i].Setup(b[i].X(), b[i].Y(), b[i].A(), c1.RED(), c1.GREEN(), c1.BLUE());
+						b[i].Color(c2.RED(), c2.GREEN(), c2.BLUE());
 					}
 					if (ColorBorder(c2, b[i]) == true)
 					{
-						b[i].Setup(b[i].X(), b[i].Y(), b[i].A(), c2.RED(), c2.GREEN(), c2.BLUE());
+						b[i].Color(c1.RED(), c1.GREEN(), c1.BLUE());
 					}
 				}
 
