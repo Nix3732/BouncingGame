@@ -6,6 +6,7 @@
 #include "Block.hpp"
 #include <thread>
 
+
 namespace ez
 {
 	class Game
@@ -79,7 +80,7 @@ namespace ez
 			}
 		}
 
-		void ColorBorder(Circle& c, Block& b)
+		bool ColorBorder(Circle& c, Block& b)
 		{
 			float xc = c.X();
 			float yc = c.Y();
@@ -105,6 +106,7 @@ namespace ez
 					b.RED(cred);
 					b.GREEN(cg);
 					b.BLUE(cb);
+					return true;
 				}
 				if ((yb - ab / 2 <= yc && yc <= yb) && (xb <= xc && xc <= xb + ab))
 				{
@@ -112,6 +114,7 @@ namespace ez
 					b.RED(cred);
 					b.GREEN(cg);
 					b.BLUE(cb);
+					return true;
 				}
 				if ((xb + ab <= xc && xc <= xb + (ab * 3 / 2)) && (yb <= yc && yc <= yb + ab))
 				{
@@ -119,6 +122,7 @@ namespace ez
 					b.RED(cred);
 					b.GREEN(cg);
 					b.BLUE(cb);
+					return true;
 				}
 				if ((yb + ab <= yc && yc <= yb + (ab * 3 / 2)) && (xb <= xc && xc <= xb + ab))
 				{
@@ -126,8 +130,14 @@ namespace ez
 					b.RED(cred);
 					b.GREEN(cg);
 					b.BLUE(cb);
+					return true;
 				}
 			}
+			else
+			{
+				return false;
+			}
+
 
 		}
 
@@ -177,9 +187,15 @@ namespace ez
 				border(c2);
 
 				for (int i = 0; i < 2500; i++)
-				{
-					ColorBorder(c1, b[i]);
-					ColorBorder(c2, b[i]);
+				{	
+					if (ColorBorder(c1, b[i]) == true)
+					{
+						b[i].Setup(b[i].X(), b[i].Y(), b[i].A(), c1.RED(), c1.GREEN(), c1.BLUE());
+					}
+					if (ColorBorder(c2, b[i]) == true)
+					{
+						b[i].Setup(b[i].X(), b[i].Y(), b[i].A(), c2.RED(), c2.GREEN(), c2.BLUE());
+					}
 				}
 
 				c1.Move(dt);
